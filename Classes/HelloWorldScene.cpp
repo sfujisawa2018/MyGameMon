@@ -100,14 +100,18 @@ bool HelloWorld::init()
 	MoveTo* actionMoveRight = MoveTo::create(5.0f, Vec2(1280 - 100, 720 - 100));
 	Sequence* actionMoveLeftRight = Sequence::create(actionMoveLeft, actionMoveRight, nullptr);
 
-	spr->runAction(actionMoveLeftRight);
+	//spr->runAction(actionMoveLeftRight);
 
 	// フェードインアウト
 	FadeOut* actionFadeOut = FadeOut::create(5.0f);
 	FadeIn* actionFadeIn = FadeIn::create(5.0f);
 	Sequence* actionFadeOutIn = Sequence::create(actionFadeOut, actionFadeIn, nullptr);
 
-	spr->runAction(actionFadeOutIn);
+	//spr->runAction(actionFadeOutIn);
+	// ふたつのアクションを繰り返し
+	Spawn* actionSpawn = Spawn::create(actionMoveLeftRight, actionFadeOutIn, nullptr);
+	Repeat* repeat = Repeat::create(actionSpawn, 5);
+	spr->runAction(repeat);
 
     return true;
 }
