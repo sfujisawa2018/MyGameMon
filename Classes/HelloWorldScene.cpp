@@ -97,13 +97,17 @@ bool HelloWorld::init()
 	// 右上に出現させる
 	spr->setPosition(Vec2(1280-100, 720-100));
 	MoveTo* actionMoveLeft = MoveTo::create(5.0f, Vec2(100, 720 - 100));
-	//EaseInOut* actionEaseMoveLeft = EaseInOut::create(actionMoveLeft, 2.0f);
 	MoveTo* actionMoveRight = MoveTo::create(5.0f, Vec2(1280 - 100, 720 - 100));
-	//EaseInOut* actionEaseMoveRight = EaseInOut::create(actionMoveRight, 2.0f);
 	Sequence* actionMoveLeftRight = Sequence::create(actionMoveLeft, actionMoveRight, nullptr);
-	//RepeatForever* actionRepeat = RepeatForever::create(actionMoveLeftRight);
 
 	spr->runAction(actionMoveLeftRight);
+
+	// フェードインアウト
+	FadeOut* actionFadeOut = FadeOut::create(5.0f);
+	FadeIn* actionFadeIn = FadeIn::create(5.0f);
+	Sequence* actionFadeOutIn = Sequence::create(actionFadeOut, actionFadeIn, nullptr);
+
+	spr->runAction(actionFadeOutIn);
 
     return true;
 }
