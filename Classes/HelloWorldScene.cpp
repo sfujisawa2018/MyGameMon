@@ -55,11 +55,7 @@ bool HelloWorld::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	// スプライトの生成
-	Sprite* spr = Sprite::create("mario.jpg");
-	addChild(spr);
-	//spr->setPosition(Vec2(300, 300));
-	spr->setScale(0.5f);
+	
 	//MoveTo* action1 = MoveTo::create(2.0f, Vec2(600.0f, 300.0f));
 	//ScaleTo* action1 = ScaleTo::create(2.0f, 2.0f);
 	//
@@ -94,24 +90,53 @@ bool HelloWorld::init()
 	//RepeatForever* action7 = RepeatForever::create(action6);
 	//spr->runAction(action7);
 
-	// 右上に出現させる
-	spr->setPosition(Vec2(1280-100, 720-100));
-	MoveTo* actionMoveLeft = MoveTo::create(5.0f, Vec2(100, 720 - 100));
-	MoveTo* actionMoveRight = MoveTo::create(5.0f, Vec2(1280 - 100, 720 - 100));
-	Sequence* actionMoveLeftRight = Sequence::create(actionMoveLeft, actionMoveRight, nullptr);
+	//// 右上に出現させる
+	//spr->setPosition(Vec2(1280-100, 720-100));
+	//MoveTo* actionMoveLeft = MoveTo::create(5.0f, Vec2(100, 720 - 100));
+	//MoveTo* actionMoveRight = MoveTo::create(5.0f, Vec2(1280 - 100, 720 - 100));
+	//Sequence* actionMoveLeftRight = Sequence::create(actionMoveLeft, actionMoveRight, nullptr);
 
-	//spr->runAction(actionMoveLeftRight);
+	////spr->runAction(actionMoveLeftRight);
 
-	// フェードインアウト
-	FadeOut* actionFadeOut = FadeOut::create(5.0f);
-	FadeIn* actionFadeIn = FadeIn::create(5.0f);
-	Sequence* actionFadeOutIn = Sequence::create(actionFadeOut, actionFadeIn, nullptr);
+	//// フェードインアウト
+	//FadeOut* actionFadeOut = FadeOut::create(5.0f);
+	//FadeIn* actionFadeIn = FadeIn::create(5.0f);
+	//Sequence* actionFadeOutIn = Sequence::create(actionFadeOut, actionFadeIn, nullptr);
 
-	//spr->runAction(actionFadeOutIn);
-	// ふたつのアクションを繰り返し
-	Spawn* actionSpawn = Spawn::create(actionMoveLeftRight, actionFadeOutIn, nullptr);
-	Repeat* repeat = Repeat::create(actionSpawn, 5);
-	spr->runAction(repeat);
+	////spr->runAction(actionFadeOutIn);
+	//// ふたつのアクションを繰り返し
+	//Spawn* actionSpawn = Spawn::create(actionMoveLeftRight, actionFadeOutIn, nullptr);
+	//Repeat* repeat = Repeat::create(actionSpawn, 5);
+	//spr->runAction(repeat);
+
+	
+
+	Sprite* sprKoura = Sprite::create("koura.png");
+	addChild(sprKoura);
+	sprKoura->setPosition(Vec2(740, 260));
+	sprKoura->setScale(0.4f);
+
+	Sprite* sprMario = Sprite::create("mario2.png");
+	addChild(sprMario);
+	sprMario->setPosition(Vec2(700, 200));
+	sprMario->setScale(0.3f);
+
+	// 甲羅の高さまでジャンプ
+	JumpTo* jump = JumpTo::create(0.3f, Vec2(700, 330), 150.0f, 1);
+	Repeat* jumpRepeat = Repeat::create(jump, 20);
+	JumpTo* jumpDown = JumpTo::create(0.3f, Vec2(700, 200), 150.0f, 1);
+	Sequence* marioAll = Sequence::create(jumpRepeat, jumpDown, nullptr);
+	sprMario->runAction(marioAll);
+
+	// ↓甲羅のアクション
+	DelayTime* delay = DelayTime::create(0.3f);
+	MoveBy* moveRight = MoveBy::create(0.15f, Vec2(50.0f,0));
+	// 元のアクションと逆の動きをするアクションを作成
+	MoveBy* moveLeft = moveRight->reverse();
+	Sequence* moveSeq = Sequence::create(moveRight, moveLeft, nullptr);
+	Repeat* moveRepeat = Repeat::create(moveSeq, 20);
+	Sequence* kouraAll = Sequence::create(delay, moveRepeat, nullptr);
+	sprKoura->runAction(kouraAll);
 
     return true;
 }
