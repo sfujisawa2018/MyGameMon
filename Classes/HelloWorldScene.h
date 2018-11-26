@@ -34,29 +34,11 @@ public:
 
     virtual bool init();
     
-    // a selector callback
-    void menuCloseCallback(cocos2d::Ref* pSender);
-
 	void update(float delta) override;
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
 
-	cocos2d::Sprite* sprite2;
-	cocos2d::Sprite* spriteKuppa;
-
-	// 経過秒数
-	float time;
-	// 移動方向のパターン
-	enum MoveDirection
-	{
-		Left, // 左
-		Down, // 下
-		Right,// 右
-		Up    // 上
-	};
-	// 今の移動方向
-	MoveDirection moveDirection;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
