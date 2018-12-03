@@ -121,6 +121,12 @@ bool HelloWorld::init()
 	sprMario->setPosition(Vec2(700, 200));
 	sprMario->setScale(0.3f);
 
+	// 関数呼び出しアクションの作成
+	// CC_CALLBACK_0 第一引数：呼び出したいメンバ関数
+	// CC_CALLBACK_0 第二引数：メンバ関数を呼び出すオブジェクト
+	CallFunc* action = CallFunc::create(
+		CC_CALLBACK_0(HelloWorld::MyFunction, this));
+
 	// 甲羅の高さまでジャンプ
 	JumpTo* jump = JumpTo::create(0.3f, Vec2(700, 330), 150.0f, 1);
 	Repeat* jumpRepeat = Repeat::create(jump, 20);
@@ -133,10 +139,13 @@ bool HelloWorld::init()
 	MoveBy* moveRight = MoveBy::create(0.15f, Vec2(50.0f,0));
 	// 元のアクションと逆の動きをするアクションを作成
 	MoveBy* moveLeft = moveRight->reverse();
-	Sequence* moveSeq = Sequence::create(moveRight, moveLeft, nullptr);
+	Sequence* moveSeq = Sequence::create(moveRight, moveLeft, action, nullptr);
 	Repeat* moveRepeat = Repeat::create(moveSeq, 20);
 	Sequence* kouraAll = Sequence::create(delay, moveRepeat, nullptr);
 	sprKoura->runAction(kouraAll);
+
+	
+	//runAction(action);
 
     return true;
 }
@@ -145,4 +154,17 @@ bool HelloWorld::init()
 void HelloWorld::update(float delta)
 {
 	
+}
+
+// 自作メンバ関数
+void HelloWorld::MyFunction()
+{
+	//log("Hello,MyFuction!!");
+	Sprite* spr = Sprite::create("koura.png");
+	addChild(spr);
+
+	float x = (float)rand() / RAND_MAX * 1280;
+	float y = (float)rand() / RAND_MAX * 768;
+
+	spr->setPosition(Vec2(x, y));
 }

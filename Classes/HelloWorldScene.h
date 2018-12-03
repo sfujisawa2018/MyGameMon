@@ -35,6 +35,8 @@ public:
     virtual bool init();
     
 	void update(float delta) override;
+
+	void MyFunction();
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
