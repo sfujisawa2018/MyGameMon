@@ -167,4 +167,17 @@ void HelloWorld::MyFunction()
 	float y = (float)rand() / RAND_MAX * 768;
 
 	spr->setPosition(Vec2(x, y));
+
+	// フェードで消える
+	FadeOut* action1 = FadeOut::create(2.0f);
+
+	CallFunc* action = CallFunc::create(
+		CC_CALLBACK_0(HelloWorld::MyFunction, this));
+	// 削除アクション
+	RemoveSelf* action2 = RemoveSelf::create();
+	// シーケンスでつなぐ
+	Sequence* action3 = 
+		Sequence::create(action1, action, action2, nullptr);
+
+	spr->runAction(action3);
 }
