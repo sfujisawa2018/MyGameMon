@@ -63,6 +63,13 @@ bool HelloWorld::init()
 	listener->onTouchCancelled = CC_CALLBACK_2(HelloWorld::onTouchCancelled, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
+	// スプライトを作る
+	spr = Sprite::create("mario.jpg");
+	addChild(spr);
+	// 位置を設定する
+	spr->setPosition(Vec2(500,300));
+	spr->setScale(0.2f);
+
     return true;
 }
 
@@ -103,28 +110,29 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* unused_event)
 	// タッチ座標
 	Vec2 touch_pos = touch->getLocation();
 
-	// スプライトを作る
-	spr = Sprite::create("mario.jpg");
-	addChild(spr);
-	// 位置を設定する
-	spr->setPosition(touch_pos);
-	spr->setScale(0.2f);
+	Rect rect_spr = spr->getBoundingBox();
+
+	bool hit = rect_spr.containsPoint(touch_pos);
+
+	if (hit)
+	{
+		log("touch sprite!!");
+		// スプライトを作る
+		Sprite* spr2 = Sprite::create("Kuppa.jpg");
+		addChild(spr2);
+	}
 
 	return true;
 }
 
 void HelloWorld::onTouchMoved(Touch* touch, Event* unused_event)
 {
-	// タッチ座標
-	Vec2 touch_pos = touch->getLocation();
-	// 位置を設定
-	spr->setPosition(touch_pos);
+
 }
 
 void HelloWorld::onTouchEnded(Touch* touch, Event* unused_event)
 {
-	// 画像の削除
-	spr->removeFromParent();
+
 }
 
 void HelloWorld::onTouchCancelled(Touch* touch, Event* unused_event)
