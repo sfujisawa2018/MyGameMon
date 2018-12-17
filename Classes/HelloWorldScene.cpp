@@ -144,8 +144,18 @@ bool HelloWorld::init()
 	Sequence* kouraAll = Sequence::create(delay, moveRepeat, nullptr);
 	sprKoura->runAction(kouraAll);
 
+	Sprite* spr2 = Sprite::create("HelloWorld.png");
+
 	
 	//runAction(action);
+
+	EventListenerTouchOneByOne* listener = EventListenerTouchOneByOne::create();
+	// 自分で作った関数を、呼び出されるように設定
+	listener->onTouchBegan = CC_CALLBACK_2(HelloWorld::onTouchBegan, this);
+	listener->onTouchMoved = CC_CALLBACK_2(HelloWorld::onTouchMoved, this);
+	listener->onTouchEnded = CC_CALLBACK_2(HelloWorld::onTouchEnded, this);
+	listener->onTouchCancelled = CC_CALLBACK_2(HelloWorld::onTouchCancelled, this);
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
     return true;
 }
@@ -180,4 +190,34 @@ void HelloWorld::MyFunction()
 		Sequence::create(action1, action, action2, nullptr);
 
 	spr->runAction(action3);
+}
+
+bool HelloWorld::onTouchBegan(Touch* touch, Event* unused_event)
+{
+	// タッチ座標
+	Vec2 touch_pos = touch->getLocation();
+
+	// スプライトを作る
+	Sprite* spr = Sprite::create("mario.jpg");
+	addChild(spr);
+	// 位置を設定する
+	spr->setPosition(touch_pos);
+	spr->setScale(0.2f);
+
+	return true;
+}
+
+void HelloWorld::onTouchMoved(Touch* touch, Event* unused_event)
+{
+
+}
+
+void HelloWorld::onTouchEnded(Touch* touch, Event* unused_event)
+{
+
+}
+
+void HelloWorld::onTouchCancelled(Touch* touch, Event* unused_event)
+{
+
 }
