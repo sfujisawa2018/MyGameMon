@@ -123,7 +123,8 @@ void HelloWorld::onTouchMoved(Touch* touch, Event* unused_event)
 
 void HelloWorld::onTouchEnded(Touch* touch, Event* unused_event)
 {
-
+	// ‰æ‘œ‚Ìíœ
+	spr->removeFromParent();
 }
 
 void HelloWorld::onTouchCancelled(Touch* touch, Event* unused_event)
