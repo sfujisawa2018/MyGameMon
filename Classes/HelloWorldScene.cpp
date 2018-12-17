@@ -124,8 +124,19 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* unused_event)
 			spr = nullptr;
 
 			// スプライトを作る
-			//Sprite* spr2 = Sprite::create("Kuppa.jpg");
-			//addChild(spr2);
+			Sprite* spr2 = Sprite::create("Kuppa.jpg");
+			addChild(spr2);
+			spr2->setPosition(touch_pos);
+
+			ScaleBy* scaleBy = ScaleBy::create(0.5f, 2.0f);
+			FadeOut* fadeOut = FadeOut::create(0.5f);
+			RemoveSelf* remove = RemoveSelf::create();
+
+			Spawn* spawn = Spawn::create(scaleBy, fadeOut, nullptr);
+			Sequence* seq = Sequence::create(spawn, remove, nullptr);
+
+			spr2->runAction(seq);
+
 		}
 	}
 
