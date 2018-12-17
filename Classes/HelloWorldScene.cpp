@@ -110,16 +110,23 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* unused_event)
 	// タッチ座標
 	Vec2 touch_pos = touch->getLocation();
 
-	Rect rect_spr = spr->getBoundingBox();
 
-	bool hit = rect_spr.containsPoint(touch_pos);
-
-	if (hit)
+	if (spr != nullptr)
 	{
-		log("touch sprite!!");
-		// スプライトを作る
-		Sprite* spr2 = Sprite::create("Kuppa.jpg");
-		addChild(spr2);
+		Rect rect_spr = spr->getBoundingBox();
+
+		bool hit = rect_spr.containsPoint(touch_pos);
+
+		if (hit)
+		{
+			log("touch sprite!!");
+			spr->removeFromParent();
+			spr = nullptr;
+
+			// スプライトを作る
+			//Sprite* spr2 = Sprite::create("Kuppa.jpg");
+			//addChild(spr2);
+		}
 	}
 
 	return true;
