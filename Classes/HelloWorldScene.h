@@ -49,6 +49,8 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
 
+	cocos2d::Sprite* spr;
+
 };
 
 #endif // __HELLOWORLD_SCENE_H__

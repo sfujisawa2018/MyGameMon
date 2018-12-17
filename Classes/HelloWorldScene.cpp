@@ -104,7 +104,7 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* unused_event)
 	Vec2 touch_pos = touch->getLocation();
 
 	// スプライトを作る
-	Sprite* spr = Sprite::create("mario.jpg");
+	spr = Sprite::create("mario.jpg");
 	addChild(spr);
 	// 位置を設定する
 	spr->setPosition(touch_pos);
@@ -115,7 +115,10 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* unused_event)
 
 void HelloWorld::onTouchMoved(Touch* touch, Event* unused_event)
 {
-
+	// タッチ座標
+	Vec2 touch_pos = touch->getLocation();
+	// 位置を設定
+	spr->setPosition(touch_pos);
 }
 
 void HelloWorld::onTouchEnded(Touch* touch, Event* unused_event)
