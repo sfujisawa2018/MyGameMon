@@ -70,10 +70,14 @@ bool HelloWorld::init()
 	spr->setPosition(Vec2(500,300));
 	spr->setScale(0.2f);
 
+	// 移動アクション
 	MoveTo* action1 = MoveTo::create(5.0f, Vec2(800, 500));
 	// アクションに番号（タグ）をふる
 	action1->setTag(100);
 	spr->runAction(action1);
+	// 点滅アクション
+	Blink* action2 = Blink::create(5.0f, 10);
+	spr->runAction(action2);
 
 	// ３秒後にMyFunctionを実行するアクション
 	CallFunc* action10 = CallFunc::create(
@@ -134,5 +138,7 @@ void HelloWorld::onTouchCancelled(Touch* touch, Event* unused_event)
 void HelloWorld::MyFunction()
 {
 	// 指定番号のアクションを止める
-	spr->stopActionByTag(100);
+	//spr->stopActionByTag(100);
+	// スプライトのアクションを全て止める
+	spr->stopAllActions();
 }
