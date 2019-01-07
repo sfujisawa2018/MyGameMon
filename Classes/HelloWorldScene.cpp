@@ -63,21 +63,24 @@ bool HelloWorld::init()
 	listener->onTouchCancelled = CC_CALLBACK_2(HelloWorld::onTouchCancelled, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
-	// スプライトを作る
-	spr = Sprite::create("mario.jpg");
-	addChild(spr);
-	// 位置を設定する
-	spr->setPosition(Vec2(500,300));
-	spr->setScale(0.2f);
+	for (int i = 0; i < 10; i++)
+	{
+		// スプライトを作る
+		spr[i] = Sprite::create("mario.jpg");
+		addChild(spr[i]);
+		// 位置を設定する
+		spr[i]->setPosition(Vec2(500, 300));
+		spr[i]->setScale(0.2f);
 
-	// 移動アクション
-	MoveTo* action1 = MoveTo::create(5.0f, Vec2(800, 500));
-	// アクションに番号（タグ）をふる
-	action1->setTag(100);
-	spr->runAction(action1);
-	// 点滅アクション
-	Blink* action2 = Blink::create(5.0f, 10);
-	spr->runAction(action2);
+		// 移動アクション
+		MoveTo* action1 = MoveTo::create(5.0f, Vec2(800, 500));
+		// アクションに番号（タグ）をふる
+		action1->setTag(100);
+		spr[i]->runAction(action1);
+		// 点滅アクション
+		Blink* action2 = Blink::create(5.0f, 10);
+		spr[i]->runAction(action2);
+	}
 
 	//// ３秒後にMyFunctionを実行するアクション
 	//CallFunc* action10 = CallFunc::create(
@@ -103,23 +106,25 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* unused_event)
 	// タッチ座標
 	Vec2 touch_pos = touch->getLocation();
 
-
-	if (spr != nullptr)
+	for (int i = 0; i < 10; i++)
 	{
-		// スプライトの矩形を取得
-		Rect rect_spr = spr->getBoundingBox();
-		// スプライトとタッチ点の当たり判定
-		bool hit = rect_spr.containsPoint(touch_pos);
-
-		// スプライトをタッチした？
-		if (hit)
+		if (spr[i] != nullptr)
 		{
-			log("touch sprite!!");
-			// アクションを全て止める
-			spr->stopAllActions();
+			// スプライトの矩形を取得
+			Rect rect_spr = spr[i]->getBoundingBox();
+			// スプライトとタッチ点の当たり判定
+			bool hit = rect_spr.containsPoint(touch_pos);
 
-			MoveBy* action = MoveBy::create(1.0f, Vec2(0, -500));
-			spr->runAction(action);
+			// スプライトをタッチした？
+			if (hit)
+			{
+				log("touch sprite!!");
+				// アクションを全て止める
+				spr[i]->stopAllActions();
+
+				MoveBy* action = MoveBy::create(1.0f, Vec2(0, -500));
+				spr[i]->runAction(action);
+			}
 		}
 	}
 
@@ -146,5 +151,5 @@ void HelloWorld::MyFunction()
 	// 指定番号のアクションを止める
 	//spr->stopActionByTag(100);
 	// スプライトのアクションを全て止める
-	spr->stopAllActions();
+	//spr->stopAllActions();
 }

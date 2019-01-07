@@ -49,7 +49,7 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
 
-	cocos2d::Sprite* spr;
+	cocos2d::Sprite* spr[10];
 
 };
 
