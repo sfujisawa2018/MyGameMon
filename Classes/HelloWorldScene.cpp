@@ -28,6 +28,21 @@
 
 USING_NS_CC;
 
+const int POS_ARRAY_NUM = 8;
+
+// 出現位置リスト
+Vec2 pos_array[POS_ARRAY_NUM] =
+{
+	Vec2(-100,720.0f / 3 * 1),
+	Vec2(-100,720.0f / 3 * 2),
+	Vec2(1280+100,720.0f / 3 * 1),
+	Vec2(1280+100,720.0f / 3 * 2),
+	Vec2(1280.0f / 3 * 1,-100),
+	Vec2(1280.0f / 3 * 2,-100),
+	Vec2(1280.0f / 3 * 1,720+100),
+	Vec2(1280.0f / 3 * 2,720+100),
+};
+
 Scene* HelloWorld::createScene()
 {
     return HelloWorld::create();
@@ -62,29 +77,40 @@ bool HelloWorld::init()
 	listener->onTouchEnded = CC_CALLBACK_2(HelloWorld::onTouchEnded, this);
 	listener->onTouchCancelled = CC_CALLBACK_2(HelloWorld::onTouchCancelled, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+	
+	// 背景
+	Sprite* spr_bg = Sprite::create("fence.png");
+	spr_bg->setScale(2.5f);
+	spr_bg->setPosition(Vec2(visibleSize.width / 2.0f, visibleSize.height / 2.0f));
+	addChild(spr_bg);
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < FLY_NUM; i++)
 	{
 		// スプライトを作る
-		spr[i] = Sprite::create("mario.jpg");
+		spr[i] = Sprite::create("fly.png");
 		addChild(spr[i]);
 		// 位置を設定する
-		float x = (float)rand() / RAND_MAX * 1280;
-		float y = (float)rand() / RAND_MAX * 720;
-		spr[i]->setPosition(Vec2(x, y));
+		Vec2 startpos, endpos;
+		int pos_index = rand() % POS_ARRAY_NUM;
+		startpos = pos_array[pos_index];
+		pos_index = rand() % POS_ARRAY_NUM;
+		endpos = pos_array[pos_index];
+		Vec2 direction = endpos - startpos;
+		float angle = atan2f(direction.y, direction.x);
+		spr[i]->setRotation(-CC_RADIANS_TO_DEGREES(angle)+90);
+
+		spr[i]->setPosition(startpos);
 		spr[i]->setScale(0.2f);
 
-		x = (float)rand() / RAND_MAX * 1280;
-		y = (float)rand() / RAND_MAX * 720;
-
+		// 待機アクション
+		DelayTime* actionDelay = DelayTime::create((float)i);
 		// 移動アクション
-		MoveTo* action1 = MoveTo::create(5.0f, Vec2(x, y));
-		// アクションに番号（タグ）をふる
-		action1->setTag(100);
-		spr[i]->runAction(action1);
-		// 点滅アクション
-		Blink* action2 = Blink::create(5.0f, 10);
-		spr[i]->runAction(action2);
+		MoveTo* actionMove = MoveTo::create(5.0f, endpos);
+
+		Sequence* actionSeq = Sequence::create(actionDelay, actionMove, nullptr);
+
+		spr[i]->runAction(actionSeq);
+
 	}
 
 	//// ３秒後にMyFunctionを実行するアクション
@@ -111,7 +137,7 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* unused_event)
 	// タッチ座標
 	Vec2 touch_pos = touch->getLocation();
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < FLY_NUM; i++)
 	{
 		if (spr[i] != nullptr)
 		{
@@ -125,10 +151,11 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* unused_event)
 			{
 				log("touch sprite!!");
 				// アクションを全て止める
-				//spr[i]->stopAllActions();
-				spr[i]->stopActionByTag(100);
+				spr[i]->stopAllActions();
+				//spr[i]->stopActionByTag(100);
+				spr[i]->setTexture("fly_death.png");
 
-				MoveBy* action = MoveBy::create(1.0f, Vec2(0, -500));
+				MoveBy* action = MoveBy::create(1.0f, Vec2(0, -1000));
 				spr[i]->runAction(action);
 			}
 		}

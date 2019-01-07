@@ -30,6 +30,9 @@
 class HelloWorld : public cocos2d::Scene
 {
 public:
+
+	static const int FLY_NUM = 100;
+
     static cocos2d::Scene* createScene();
 
     virtual bool init();
@@ -49,7 +52,7 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
 
-	cocos2d::Sprite* spr[10];
+	cocos2d::Sprite* spr[FLY_NUM];
 
 };
 
