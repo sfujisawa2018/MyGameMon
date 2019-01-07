@@ -79,15 +79,15 @@ bool HelloWorld::init()
 	Blink* action2 = Blink::create(5.0f, 10);
 	spr->runAction(action2);
 
-	// ３秒後にMyFunctionを実行するアクション
-	CallFunc* action10 = CallFunc::create(
-		CC_CALLBACK_0(HelloWorld::MyFunction, this)
-	);
-	DelayTime* action11 = DelayTime::create(3.0f);
-	Sequence* action12 = Sequence::create(
-		action11, action10, nullptr);
+	//// ３秒後にMyFunctionを実行するアクション
+	//CallFunc* action10 = CallFunc::create(
+	//	CC_CALLBACK_0(HelloWorld::MyFunction, this)
+	//);
+	//DelayTime* action11 = DelayTime::create(3.0f);
+	//Sequence* action12 = Sequence::create(
+	//	action11, action10, nullptr);
 
-	this->runAction(action12);
+	//this->runAction(action12);
 
     return true;
 }
@@ -106,14 +106,20 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* unused_event)
 
 	if (spr != nullptr)
 	{
+		// スプライトの矩形を取得
 		Rect rect_spr = spr->getBoundingBox();
-
+		// スプライトとタッチ点の当たり判定
 		bool hit = rect_spr.containsPoint(touch_pos);
 
+		// スプライトをタッチした？
 		if (hit)
 		{
 			log("touch sprite!!");
+			// アクションを全て止める
+			spr->stopAllActions();
 
+			MoveBy* action = MoveBy::create(1.0f, Vec2(0, -500));
+			spr->runAction(action);
 		}
 	}
 
