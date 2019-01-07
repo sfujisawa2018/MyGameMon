@@ -69,11 +69,16 @@ bool HelloWorld::init()
 		spr[i] = Sprite::create("mario.jpg");
 		addChild(spr[i]);
 		// 位置を設定する
-		spr[i]->setPosition(Vec2(500, 300));
+		float x = (float)rand() / RAND_MAX * 1280;
+		float y = (float)rand() / RAND_MAX * 720;
+		spr[i]->setPosition(Vec2(x, y));
 		spr[i]->setScale(0.2f);
 
+		x = (float)rand() / RAND_MAX * 1280;
+		y = (float)rand() / RAND_MAX * 720;
+
 		// 移動アクション
-		MoveTo* action1 = MoveTo::create(5.0f, Vec2(800, 500));
+		MoveTo* action1 = MoveTo::create(5.0f, Vec2(x, y));
 		// アクションに番号（タグ）をふる
 		action1->setTag(100);
 		spr[i]->runAction(action1);
@@ -120,7 +125,8 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* unused_event)
 			{
 				log("touch sprite!!");
 				// アクションを全て止める
-				spr[i]->stopAllActions();
+				//spr[i]->stopAllActions();
+				spr[i]->stopActionByTag(100);
 
 				MoveBy* action = MoveBy::create(1.0f, Vec2(0, -500));
 				spr[i]->runAction(action);
