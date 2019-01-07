@@ -70,6 +70,21 @@ bool HelloWorld::init()
 	spr->setPosition(Vec2(500,300));
 	spr->setScale(0.2f);
 
+	MoveTo* action1 = MoveTo::create(5.0f, Vec2(800, 500));
+	// アクションに番号（タグ）をふる
+	action1->setTag(100);
+	spr->runAction(action1);
+
+	// ３秒後にMyFunctionを実行するアクション
+	CallFunc* action10 = CallFunc::create(
+		CC_CALLBACK_0(HelloWorld::MyFunction, this)
+	);
+	DelayTime* action11 = DelayTime::create(3.0f);
+	Sequence* action12 = Sequence::create(
+		action11, action10, nullptr);
+
+	this->runAction(action12);
+
     return true;
 }
 
@@ -77,32 +92,6 @@ bool HelloWorld::init()
 void HelloWorld::update(float delta)
 {
 	
-}
-
-// 自作メンバ関数
-void HelloWorld::MyFunction()
-{
-	//log("Hello,MyFuction!!");
-	Sprite* spr = Sprite::create("koura.png");
-	addChild(spr);
-
-	float x = (float)rand() / RAND_MAX * 1280;
-	float y = (float)rand() / RAND_MAX * 768;
-
-	spr->setPosition(Vec2(x, y));
-
-	// フェードで消える
-	FadeOut* action1 = FadeOut::create(2.0f);
-
-	CallFunc* action = CallFunc::create(
-		CC_CALLBACK_0(HelloWorld::MyFunction, this));
-	// 削除アクション
-	RemoveSelf* action2 = RemoveSelf::create();
-	// シーケンスでつなぐ
-	Sequence* action3 = 
-		Sequence::create(action1, action, action2, nullptr);
-
-	spr->runAction(action3);
 }
 
 bool HelloWorld::onTouchBegan(Touch* touch, Event* unused_event)
@@ -120,22 +109,6 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* unused_event)
 		if (hit)
 		{
 			log("touch sprite!!");
-			spr->removeFromParent();
-			spr = nullptr;
-
-			// スプライトを作る
-			Sprite* spr2 = Sprite::create("Kuppa.jpg");
-			addChild(spr2);
-			spr2->setPosition(touch_pos);
-
-			ScaleBy* scaleBy = ScaleBy::create(0.5f, 2.0f);
-			FadeOut* fadeOut = FadeOut::create(0.5f);
-			RemoveSelf* remove = RemoveSelf::create();
-
-			Spawn* spawn = Spawn::create(scaleBy, fadeOut, nullptr);
-			Sequence* seq = Sequence::create(spawn, remove, nullptr);
-
-			spr2->runAction(seq);
 
 		}
 	}
@@ -156,4 +129,10 @@ void HelloWorld::onTouchEnded(Touch* touch, Event* unused_event)
 void HelloWorld::onTouchCancelled(Touch* touch, Event* unused_event)
 {
 
+}
+
+void HelloWorld::MyFunction()
+{
+	// 指定番号のアクションを止める
+	spr->stopActionByTag(100);
 }
